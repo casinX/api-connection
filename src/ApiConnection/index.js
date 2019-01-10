@@ -18,7 +18,7 @@ class ApiConnection {
     this.cancelMethod = null;
   };
 
-  call = async (data) => {
+  call = async (data={}) => {
     data = this.request(data);
     this.cancel();
 
