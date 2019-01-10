@@ -52,16 +52,16 @@ class ApiConnection {
       config.data = data;
     }
 
-    const result = {
-      response: null,
-      error: null,
-    };
+    const result = [
+      null,
+      null,
+    ];
 
     try {
-      result.response = this.response(await axios(config));
+      result[0] = this.response(await axios(config));
     } catch (error) {
       if (!axios.isCancel(error)) {
-        result.error = this.error(error.response);
+        result[1] = this.error(error.response);
       }
     }
 
