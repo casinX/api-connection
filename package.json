@@ -1,6 +1,6 @@
 {
   "name": "@ktx/api-connection",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Api connection controller",
   "keywords": [
     "casinX",
@@ -21,7 +21,7 @@
     "url": "https://github.com/casinX/api-connection/issues"
   },
   "main": "./lib/index.js",
-  "unpkg": "dist/react-relax.js",
+  "unpkg": "dist/api-connection.min.js",
   "module": "es/index.js",
   "files": [
     "dist",
