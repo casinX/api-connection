@@ -51,15 +51,15 @@ class ApiConnection {
       }
     }
 
-    this.cancelMethod = null;
+    this.__cancelMethod = null;
 
     return result;
   };
 
   cancel = () => {
-    if(this.cancelMethod !== null){
-      this.cancelMethod();
-      this.cancelMethod = null;
+    if(this.__cancelMethod !== null){
+      this.__cancelMethod();
+      this.__cancelMethod = null;
     }
   };
 
