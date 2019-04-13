@@ -8,48 +8,34 @@ class ApiConnection {
     const {
       url,
       method=methods.GET,
-      isFormData=false,
     } = options;
 
-    this.url = url;
-    this.method = method;
-    this.isFormData = isFormData;
+    this.__url = url;
+    this.__method = method;
 
-    this.cancelMethod = null;
+    this.__cancelMethod = null;
   };
 
   call = async (data={}) => {
-    data = this.request(data);
+    const requestData = this.request(data);
+    const requestHeaders = this.requestHeaders(data);
     this.cancel();
 
     const source = axios.CancelToken.source();
 
     const config = {
-      url: this.url,
-      method: this.method,
+      url: this.__url,
+      method: this.__method,
       cancelToken: source.token,
+      headers: requestHeaders,
     };
 
-    this.cancelMethod = source.cancel;
-
-    if(this.isFormData){
-      config.headers = {
-        'Content-Type': 'multipart/form-data'
-      };
-
-      const formData = new FormData();
-
-      Object.entries(data).forEach(([dataKey, dataValue]) => {
-        formData.append(dataKey, dataValue);
-      });
-
-      data = formData;
-    }
+    this.__cancelMethod = source.cancel;
 
     if (this.method === methods.GET) {
-      config.params = data;
+      config.params = requestData;
     } else {
-      config.data = data;
+      config.data = requestData;
     }
 
     const result = [
@@ -61,7 +47,7 @@ class ApiConnection {
       result[0] = this.response(await axios(config));
     } catch (error) {
       if (!axios.isCancel(error)) {
-        result[1] = this.error(error.response);
+        result[1] = this.error(error);
       }
     }
 
@@ -77,20 +63,19 @@ class ApiConnection {
     }
   };
 
-  request = (params) => {
-    return params;
+  request = (data) => {
+    return data;
+  };
+
+  requestHeaders = (data) => {
+    return {};
   };
 
   response = (response) => {
-    return response.data;
+    return response;
   };
 
-  error = (error=null) => {
-
-    if(error === null){
-      console.error('DEV: Runtime error');
-    }
-
+  error = (error) => {
     return error;
   };
 }
