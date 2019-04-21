@@ -32,7 +32,7 @@ class ApiConnection {
 
     this.__cancelMethod = source.cancel;
 
-    if (this.method === methods.GET) {
+    if (this.__method === methods.GET) {
       config.params = requestData;
     } else {
       config.data = requestData;
